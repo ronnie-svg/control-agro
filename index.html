@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#25744a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Control Agro">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Control Agro</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Negocio agricola y ganadero</p>
+        <h1>Control Agro</h1>
+      </div>
+      <button class="icon-button" id="settingsButton" type="button" aria-label="Ajustes">Ajustes</button>
+    </header>
+
+    <section class="summary screen" data-panel="Inicio" aria-label="Resumen">
+      <div>
+        <span>Este mes</span>
+        <strong id="monthResult">0,00 EUR</strong>
+      </div>
+      <div>
+        <span>Gastos</span>
+        <strong id="monthExpenses">0,00 EUR</strong>
+      </div>
+      <div>
+        <span>Ingresos</span>
+        <strong id="monthIncome">0,00 EUR</strong>
+      </div>
+    </section>
+
+    <section class="report screen hidden" data-panel="Resumen">
+      <div class="screen-header">
+        <button class="secondary small" id="backHomeFromReport" type="button">Volver</button>
+        <h2>Resumen</h2>
+      </div>
+      <div class="report-grid">
+        <div>
+          <span>Resultado del ano</span>
+          <strong id="yearResult">0,00 EUR</strong>
+        </div>
+        <div>
+          <span>Ingresos del ano</span>
+          <strong id="yearIncome">0,00 EUR</strong>
+        </div>
+        <div>
+          <span>Gastos del ano</span>
+          <strong id="yearExpenses">0,00 EUR</strong>
+        </div>
+        <div>
+          <span>Inversiones del ano</span>
+          <strong id="yearInvestments">0,00 EUR</strong>
+        </div>
+      </div>
+      <h2>Por categoria</h2>
+      <div id="categoryReport" class="category-report"></div>
+    </section>
+
+    <section class="home-actions screen" data-panel="Inicio" aria-label="Acciones rapidas">
+      <button class="home-action report-link" type="button" data-screen="Resumen">
+        <span>Ver resumen</span>
+        <strong>Resultado anual y categorias</strong>
+      </button>
+      <button class="home-action income" type="button" data-screen="Ingreso">
+        <span>Nuevo ingreso</span>
+        <strong>Ventas, PAC, otros cobros</strong>
+      </button>
+      <button class="home-action expense" type="button" data-screen="Gasto">
+        <span>Nuevo gasto</span>
+        <strong>Pienso, gasoleo, veterinario</strong>
+      </button>
+      <button class="home-action investment" type="button" data-screen="Inversion">
+        <span>Nueva inversion</span>
+        <strong>Maquinaria, instalaciones, ganado</strong>
+      </button>
+    </section>
+
+    <form id="movementForm" class="form screen hidden" data-panel="Movimiento">
+      <h2 id="formTitle">Nuevo ingreso</h2>
+      <input type="hidden" id="type" value="Ingreso">
+
+      <label>
+        Importe
+        <div class="money-field">
+          <input id="amount" name="amount" inputmode="decimal" placeholder="0,00" required>
+          <span>EUR</span>
+        </div>
+      </label>
+
+      <label>
+        Categoria
+        <select id="category" name="category" required></select>
+      </label>
+
+      <label>
+        Fecha
+        <input id="date" name="date" type="date" required>
+      </label>
+
+      <label>
+        Actividad
+        <select id="activity" name="activity" required>
+          <option>Agricultura</option>
+          <option>Ganaderia</option>
+          <option>Comun</option>
+        </select>
+      </label>
+
+      <label>
+        Parcela / animal / lote
+        <input id="asset" name="asset" placeholder="Ej. Parcela 3, lote terneros">
+      </label>
+
+      <label>
+        Proveedor o cliente
+        <input id="party" name="party" placeholder="Ej. cooperativa, veterinario">
+      </label>
+
+      <label>
+        Nota rapida
+        <textarea id="notes" name="notes" rows="3" placeholder="Factura, concepto, detalle importante"></textarea>
+      </label>
+
+      <label>
+        Foto o archivo
+        <input id="attachment" name="attachment" type="file" accept="image/*,.pdf">
+      </label>
+
+      <div class="form-actions">
+        <button class="secondary" id="backHome" type="button">Volver</button>
+        <button class="submit" type="submit">Guardar</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+    </form>
+
+    <section class="recent screen" data-panel="Inicio">
+      <div class="section-title">
+        <h2>Ultimos movimientos</h2>
+        <button id="exportButton" type="button">Exportar CSV</button>
+      </div>
+      <div id="recentList" class="recent-list"></div>
+    </section>
+
+    <dialog id="settingsDialog">
+      <form method="dialog" class="settings">
+        <h2>Ajustes</h2>
+        <label>
+          URL de Apps Script
+          <input id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+        </label>
+        <p>Si esta vacio, los datos se guardan solo en este movil para probar la app.</p>
+        <div class="dialog-actions">
+          <button value="cancel" type="submit">Cerrar</button>
+          <button id="saveSettings" value="default" type="button">Guardar</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
