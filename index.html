@@ -44,14 +44,15 @@
   <main class="app">
     <header class="topbar">
       <div class="brand">
-        <span class="brand-logo" role="img" aria-label="Iturribero Abereak"></span>
+        <span class="brand-mark" aria-hidden="true">IA</span>
+        <span class="brand-name">Iturribero Abereak</span>
       </div>
       <button class="icon-button" id="settingsButton" type="button" aria-label="Ajustes">
         <svg><use href="#icon-cog"></use></svg>
       </button>
     </header>
 
-    <section class="summary screen" data-panel="Inicio" aria-label="Resumen">
+    <section class="summary screen hidden" data-panel="Resumen" aria-label="Resumen mensual">
       <div class="summary-primary">
         <span>Este mes</span>
         <strong id="monthResult">0,00 EUR</strong>
@@ -99,6 +100,10 @@
     </section>
 
     <section class="home-actions screen" data-panel="Inicio" aria-label="Acciones rapidas">
+      <div class="home-intro">
+        <span>Panel de control</span>
+        <strong>Que quieres registrar?</strong>
+      </div>
       <button class="home-action report-link" type="button" data-screen="Resumen">
         <span class="action-icon"><svg><use href="#icon-chart"></use></svg></span>
         <span>Resumen</span>

@@ -12,7 +12,8 @@
   --red: #8f493c;
   --blue: #536f7d;
   --amber: #9a7435;
-  --shadow: 0 14px 34px rgb(41 42 34 / 8%);
+  --shadow: 0 12px 28px rgb(41 42 34 / 7%);
+  --shadow-soft: 0 8px 18px rgb(41 42 34 / 5%);
 }
 
 * {
@@ -21,7 +22,8 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  background:
+    linear-gradient(180deg, #fbfaf5 0%, var(--bg) 42%, #e8e2d4 100%);
   color: var(--text);
   height: 100dvh;
   overflow: hidden;
@@ -55,7 +57,7 @@ textarea {
   height: calc(100dvh - 5px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 12px 12px 88px;
+  padding: 14px 14px 88px;
 }
 
 .topbar {
@@ -63,8 +65,8 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  min-height: 50px;
-  padding: 2px 0 8px;
+  min-height: 48px;
+  padding: 0 0 16px;
 }
 
 h1,
@@ -80,23 +82,38 @@ h2 {
 .brand {
   display: flex;
   align-items: center;
+  gap: 10px;
   flex: 1;
-  height: 42px;
+  height: 44px;
   min-width: 0;
   max-width: calc(100% - 56px);
   overflow: hidden;
 }
 
-.brand-logo {
-  display: block;
-  width: min(48vw, 156px);
-  height: 34px;
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.brand-name {
+  min-width: 0;
   overflow: hidden;
-  background-image: url("https://www.iturriberoabereak.com/Iturriberoabereaklogo.svg");
-  background-position: left center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  color: var(--green);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .icon-button,
@@ -125,7 +142,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--line);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   box-shadow: var(--shadow);
 }
 
@@ -177,8 +194,27 @@ label {
 .home-actions {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 0;
+}
+
+.home-intro {
+  display: grid;
+  gap: 3px;
+  grid-column: 1 / -1;
+  padding: 2px 2px 4px;
+}
+
+.home-intro span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.home-intro strong {
+  color: var(--text);
+  font-size: 1.12rem;
 }
 
 .home-action {
@@ -191,14 +227,14 @@ label {
   border: 1px solid var(--line);
   border-left: 0;
   border-top: 0;
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--panel);
   color: var(--text);
-  aspect-ratio: 1 / 0.92;
-  min-height: 86px;
-  padding: 8px;
+  aspect-ratio: 1 / 1;
+  min-height: 92px;
+  padding: 10px 8px;
   text-align: center;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-soft);
 }
 
 .action-icon {
@@ -218,7 +254,7 @@ label {
 
 .home-action span {
   font-weight: 800;
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   line-height: 1.05;
 }
 
