@@ -1,11 +1,11 @@
 {
-  "name": "Control Agro",
-  "short_name": "Control Agro",
+  "name": "Iturribero Abereak",
+  "short_name": "Iturribero",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f4f5f1",
-  "theme_color": "#25744a",
+  "background_color": "#f2f0ea",
+  "theme_color": "#314b33",
   "icons": [
     {
       "src": "icon.svg",

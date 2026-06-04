@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#25744a">
+  <meta name="theme-color" content="#314b33">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="Control Agro">
+  <meta name="apple-mobile-web-app-title" content="Iturribero">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Control Agro</title>
+  <title>Iturribero Abereak | Control</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
@@ -17,8 +17,9 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Negocio agricola y ganadero</p>
-        <h1>Control Agro</h1>
+        <p class="eyebrow">Durana - Arrazua-Ubarrundia - Alava</p>
+        <h1>Iturribero Abereak</h1>
+        <p class="subtitle">Control de ingresos, gastos e inversiones</p>
       </div>
       <button class="icon-button" id="settingsButton" type="button" aria-label="Ajustes">Ajustes</button>
     </header>
@@ -68,20 +69,81 @@
     <section class="home-actions screen" data-panel="Inicio" aria-label="Acciones rapidas">
       <button class="home-action report-link" type="button" data-screen="Resumen">
         <span>Ver resumen</span>
-        <strong>Resultado anual y categorias</strong>
+        <strong>Resultado anual, categorias y campana</strong>
       </button>
       <button class="home-action income" type="button" data-screen="Ingreso">
         <span>Nuevo ingreso</span>
-        <strong>Ventas, PAC, otros cobros</strong>
+        <strong>Ventas, PAC y otros cobros</strong>
       </button>
       <button class="home-action expense" type="button" data-screen="Gasto">
         <span>Nuevo gasto</span>
-        <strong>Pienso, gasoleo, veterinario</strong>
+        <strong>Pienso, gasoleo, veterinario y campo</strong>
       </button>
       <button class="home-action investment" type="button" data-screen="Inversion">
         <span>Nueva inversion</span>
         <strong>Maquinaria, instalaciones, ganado</strong>
       </button>
+      <button class="home-action crops-link" type="button" data-screen="Cultivos">
+        <span>Parcelas y cultivos</span>
+        <strong>Siembras, superficies y cosechas</strong>
+      </button>
+    </section>
+
+    <section class="crops screen hidden" data-panel="Cultivos">
+      <div class="screen-header">
+        <button class="secondary small" id="backHomeFromCrops" type="button">Volver</button>
+        <h2>Parcelas y cultivos</h2>
+      </div>
+
+      <form id="cropForm" class="form">
+        <label>
+          Parcela
+          <input id="cropParcel" placeholder="Ej. Parcela 3" required>
+        </label>
+
+        <label>
+          Hectareas
+          <input id="cropHectares" inputmode="decimal" placeholder="Ej. 12,5" required>
+        </label>
+
+        <label>
+          Cultivo sembrado
+          <input id="cropName" placeholder="Ej. trigo, cebada, maiz" required>
+        </label>
+
+        <label>
+          Campana
+          <input id="cropCampaign" placeholder="Ej. 2026" required>
+        </label>
+
+        <label>
+          Fecha de siembra
+          <input id="cropSowDate" type="date">
+        </label>
+
+        <label>
+          Fecha de cosecha
+          <input id="cropHarvestDate" type="date">
+        </label>
+
+        <label>
+          Produccion cosechada
+          <input id="cropProduction" inputmode="decimal" placeholder="Ej. 48500 kg">
+        </label>
+
+        <label>
+          Notas
+          <textarea id="cropNotes" rows="3" placeholder="Humedad, variedad, incidencias, destino"></textarea>
+        </label>
+
+        <button class="submit" type="submit">Guardar parcela</button>
+        <p class="status" id="cropStatus" role="status"></p>
+      </form>
+
+      <div class="section-title crop-title">
+        <h2>Ultimas parcelas</h2>
+      </div>
+      <div id="cropList" class="recent-list"></div>
     </section>
 
     <form id="movementForm" class="form screen hidden" data-panel="Movimiento">

@@ -28,6 +28,7 @@ const categories = {
 };
 
 const storageKey = "control-agro-movements";
+const cropsStorageKey = "iturribero-crops";
 const scriptUrlKey = "control-agro-script-url";
 const defaultScriptUrl = "https://script.google.com/macros/s/AKfycbz06zQqqae3xaHIXWtFvIemTCqO8zovpckmFi9OHcQlqh6U3fFn6ugG61dk6Hxbxv-X/exec";
 
@@ -39,6 +40,9 @@ const recentList = document.querySelector("#recentList");
 const scriptUrlInput = document.querySelector("#scriptUrl");
 const settingsDialog = document.querySelector("#settingsDialog");
 const formTitle = document.querySelector("#formTitle");
+const cropForm = document.querySelector("#cropForm");
+const cropStatus = document.querySelector("#cropStatus");
+const cropList = document.querySelector("#cropList");
 
 document.querySelector("#date").valueAsDate = new Date();
 scriptUrlInput.value = localStorage.getItem(scriptUrlKey) || defaultScriptUrl;
@@ -62,6 +66,14 @@ function saveMovements(movements) {
   localStorage.setItem(storageKey, JSON.stringify(movements));
 }
 
+function getCrops() {
+  return JSON.parse(localStorage.getItem(cropsStorageKey) || "[]");
+}
+
+function saveCrops(crops) {
+  localStorage.setItem(cropsStorageKey, JSON.stringify(crops));
+}
+
 function setType(type) {
   typeInput.value = type;
   formTitle.textContent = `Nuevo ${type.toLowerCase()}`;
@@ -81,7 +93,9 @@ function showScreen(screen) {
       ? panel.dataset.panel === "Inicio"
       : screen === "Resumen"
         ? panel.dataset.panel === "Resumen"
-        : panel.dataset.panel === "Movimiento";
+        : screen === "Cultivos"
+          ? panel.dataset.panel === "Cultivos"
+          : panel.dataset.panel === "Movimiento";
     panel.classList.toggle("hidden", !shouldShow);
   });
 
@@ -89,7 +103,11 @@ function showScreen(screen) {
     updateReport();
   }
 
-  if (screen !== "Inicio" && screen !== "Resumen") {
+  if (screen === "Cultivos") {
+    renderCrops();
+  }
+
+  if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Cultivos") {
     setType(screen);
     document.querySelector("#amount").focus();
   }
@@ -205,6 +223,30 @@ async function sendToSheet(movement) {
   return true;
 }
 
+function renderCrops() {
+  const crops = getCrops().slice(0, 10);
+  cropList.innerHTML = "";
+
+  if (!crops.length) {
+    cropList.innerHTML = '<p class="status">Todavia no hay parcelas registradas.</p>';
+    return;
+  }
+
+  crops.forEach((crop) => {
+    const item = document.createElement("article");
+    item.className = "movement";
+    item.innerHTML = `
+      <div class="movement-main">
+        <span>${crop.parcel} - ${crop.crop}</span>
+        <span>${crop.hectares} ha</span>
+      </div>
+      <div class="movement-meta">Campana ${crop.campaign}${crop.sowDate ? ` - siembra ${crop.sowDate}` : ""}</div>
+      <div class="movement-meta">${[crop.harvestDate ? `cosecha ${crop.harvestDate}` : "", crop.production, crop.notes].filter(Boolean).join(" - ")}</div>
+    `;
+    cropList.append(item);
+  });
+}
+
 function resetForm() {
   form.reset();
   document.querySelector("#date").valueAsDate = new Date();
@@ -245,6 +287,43 @@ document.querySelectorAll(".home-action").forEach((button) => {
 
 document.querySelector("#backHome").addEventListener("click", () => showScreen("Inicio"));
 document.querySelector("#backHomeFromReport").addEventListener("click", () => showScreen("Inicio"));
+document.querySelector("#backHomeFromCrops").addEventListener("click", () => showScreen("Inicio"));
+
+cropForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const crop = {
+    recordKind: "crop",
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    parcel: document.querySelector("#cropParcel").value.trim(),
+    hectares: parseAmount(document.querySelector("#cropHectares").value),
+    crop: document.querySelector("#cropName").value.trim(),
+    campaign: document.querySelector("#cropCampaign").value.trim(),
+    sowDate: document.querySelector("#cropSowDate").value,
+    harvestDate: document.querySelector("#cropHarvestDate").value,
+    production: document.querySelector("#cropProduction").value.trim(),
+    notes: document.querySelector("#cropNotes").value.trim()
+  };
+
+  if (!crop.parcel || !crop.crop || !crop.campaign || !Number.isFinite(crop.hectares) || crop.hectares <= 0) {
+    cropStatus.textContent = "Revisa parcela, hectareas, cultivo y campana.";
+    return;
+  }
+
+  saveCrops([crop, ...getCrops()]);
+  renderCrops();
+  cropStatus.textContent = "Guardado en el movil.";
+
+  try {
+    await sendToSheet(crop);
+    cropStatus.textContent = "Guardado en el movil y enviado a Google Sheets.";
+  } catch {
+    cropStatus.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
+  }
+
+  cropForm.reset();
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
