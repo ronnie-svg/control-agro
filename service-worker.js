@@ -1,4 +1,4 @@
-const cacheName = "control-agro-v16";
+const cacheName = "control-agro-v17";
 const assets = [
   "./index.html",
   "./styles.css",
@@ -11,6 +11,7 @@ const assets = [
   "./src/data/api.js",
   "./src/data/categories.js",
   "./src/data/storage.js",
+  "./src/data/sync.js",
   "./src/screens/add.js",
   "./src/screens/crops.js",
   "./src/screens/home.js",

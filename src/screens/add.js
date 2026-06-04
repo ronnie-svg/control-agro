@@ -4,7 +4,7 @@ const addOptions = [
   { screen: "Ingreso", className: "income", iconName: "plus", label: "Ingreso" },
   { screen: "Gasto", className: "expense", iconName: "minus", label: "Gasto" },
   { screen: "Inversion", className: "investment", iconName: "tractor", label: "Inversion" },
-  { screen: "Cultivos", className: "crops-link", iconName: "leaf", label: "Cultivo" },
+  { screen: "Cultivos", className: "crops-link", iconName: "leaf", label: "Parcela" },
   { screen: "Ganado", className: "livestock-link", iconName: "cow", label: "Animal" }
 ];
 

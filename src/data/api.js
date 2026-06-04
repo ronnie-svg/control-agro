@@ -2,7 +2,7 @@ import { getScriptUrl } from "./storage.js";
 
 export async function sendToSheet(record) {
   const targetUrl = getScriptUrl();
-  if (!targetUrl) return false;
+  if (!targetUrl) return { attempted: false, confirmed: false };
 
   await fetch(targetUrl, {
     method: "POST",
@@ -10,5 +10,5 @@ export async function sendToSheet(record) {
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify(record)
   });
-  return true;
+  return { attempted: true, confirmed: false };
 }

@@ -778,9 +778,71 @@ dialog::backdrop {
   color: var(--muted);
 }
 
-.dialog-actions {
+.sync-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sync-panel div {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  padding: 10px;
+}
+
+.sync-panel span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.sync-panel strong {
+  color: var(--green);
+  font-size: 1.1rem;
+}
+
+.sync-list {
+  display: grid;
+  gap: 6px;
+  max-height: 210px;
+  overflow: auto;
+}
+
+.sync-item {
+  display: grid;
+  gap: 5px;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 9px 10px;
+}
+
+.sync-item.error {
+  border-left-color: var(--red);
+}
+
+.sync-item.pending {
+  border-left-color: var(--amber);
+}
+
+.sync-item div {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.sync-item span,
+.sync-item small {
+  color: var(--muted);
+}
+
+.dialog-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 8px;
 }
 

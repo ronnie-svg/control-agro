@@ -19,7 +19,7 @@ import {
   saveMovements,
   saveScriptUrl
 } from "./data/storage.js";
-import { sendToSheet } from "./data/api.js";
+import { getSyncSummary, retryPendingSync, syncRecord } from "./data/sync.js";
 import { money, parseAmount } from "./utils/format.js";
 import { readAttachment } from "./utils/files.js";
 
@@ -179,6 +179,12 @@ function updateSummary() {
   updateReport();
 }
 
+function syncStatusText(result) {
+  if (result.confirmed) return "Guardado en el movil y confirmado en Google Sheets.";
+  if (result.attempted) return "Guardado en el movil. Envio intentado; revisa Google Sheets.";
+  return "Guardado en el movil. Queda pendiente de sincronizar.";
+}
+
 function updateReport() {
   const year = new Date().getFullYear();
   const movements = getMovements().filter((movement) => {
@@ -243,6 +249,35 @@ function updateOperationsReport() {
     ["Terneros", livestockByType.Ternero || 0],
     ["Novillas", livestockByType.Novilla || 0]
   ]);
+}
+
+function updateSyncPanel() {
+  const summary = getSyncSummary();
+  const pending = document.querySelector("#syncPending");
+  if (!pending) return;
+
+  document.querySelector("#syncPending").textContent = summary.pending;
+  document.querySelector("#syncErrors").textContent = summary.errors;
+  document.querySelector("#syncAttempted").textContent = summary.attempted;
+
+  const latestItems = summary.items.slice(0, 6);
+  document.querySelector("#syncList").innerHTML = latestItems.length
+    ? latestItems.map((item) => `
+        <article class="sync-item ${item.status}">
+          <div>
+            <strong>${item.label}</strong>
+            <span>${syncStatusLabel(item.status)}</span>
+          </div>
+          <small>${item.lastMessage || "Pendiente de envio."}</small>
+        </article>
+      `).join("")
+    : '<p class="status">Todavia no hay envios registrados.</p>';
+}
+
+function syncStatusLabel(status) {
+  if (status === "attempted") return "Intentado";
+  if (status === "error") return "Error";
+  return "Pendiente";
 }
 
 function renderRecent() {
@@ -370,12 +405,23 @@ function bindEvents() {
   document.querySelector("#exportButton").addEventListener("click", exportCsv);
 
   document.querySelector("#settingsButton").addEventListener("click", () => {
+    updateSyncPanel();
     document.querySelector("#settingsDialog").showModal();
   });
 
   document.querySelector("#saveSettings").addEventListener("click", () => {
     saveScriptUrl(document.querySelector("#scriptUrl").value);
     document.querySelector("#settingsDialog").close();
+  });
+
+  document.querySelector("#retrySync").addEventListener("click", async () => {
+    const button = document.querySelector("#retrySync");
+    button.disabled = true;
+    button.textContent = "Reintentando";
+    await retryPendingSync();
+    updateSyncPanel();
+    button.disabled = false;
+    button.textContent = "Reintentar";
   });
 
   document.querySelector("#cropForm").addEventListener("submit", handleCropSubmit);
@@ -409,12 +455,9 @@ async function handleLivestockSubmit(event) {
   renderLivestock();
   livestockStatus.textContent = "Guardado en el movil.";
 
-  try {
-    await sendToSheet(animal);
-    livestockStatus.textContent = "Guardado en el movil y enviado a Google Sheets.";
-  } catch {
-    livestockStatus.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
-  }
+  const result = await syncRecord(animal);
+  livestockStatus.textContent = syncStatusText(result);
+  updateSyncPanel();
 
   document.querySelector("#livestockForm").reset();
 }
@@ -446,12 +489,9 @@ async function handleCropSubmit(event) {
   renderCrops();
   cropStatus.textContent = "Guardado en el movil.";
 
-  try {
-    await sendToSheet(crop);
-    cropStatus.textContent = "Guardado en el movil y enviado a Google Sheets.";
-  } catch {
-    cropStatus.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
-  }
+  const result = await syncRecord(crop);
+  cropStatus.textContent = syncStatusText(result);
+  updateSyncPanel();
 
   document.querySelector("#cropForm").reset();
 }
@@ -489,12 +529,9 @@ async function handleMovementSubmit(event) {
   renderLivestock();
   statusText.textContent = "Guardado en el movil.";
 
-  try {
-    await sendToSheet(movement);
-    statusText.textContent = "Guardado en el movil y enviado a Google Sheets.";
-  } catch {
-    statusText.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
-  }
+  const result = await syncRecord(movement);
+  statusText.textContent = syncStatusText(result);
+  updateSyncPanel();
 
   resetMovementForm();
 }
@@ -507,6 +544,7 @@ function init() {
   bindEvents();
   updateSummary();
   renderRecent();
+  updateSyncPanel();
 
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     navigator.serviceWorker.register("service-worker.js");
