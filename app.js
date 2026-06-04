@@ -88,6 +88,11 @@ function setType(type) {
 }
 
 function showScreen(screen) {
+  document.querySelectorAll(".nav-action").forEach((button) => {
+    const active = button.dataset.screen === screen || (["Gasto", "Inversion"].includes(screen) && button.dataset.screen === "Ingreso");
+    button.classList.toggle("active", active);
+  });
+
   document.querySelectorAll(".screen").forEach((panel) => {
     const shouldShow = screen === "Inicio"
       ? panel.dataset.panel === "Inicio"
@@ -282,6 +287,10 @@ function exportCsv() {
 }
 
 document.querySelectorAll(".home-action").forEach((button) => {
+  button.addEventListener("click", () => showScreen(button.dataset.screen));
+});
+
+document.querySelectorAll(".nav-action").forEach((button) => {
   button.addEventListener("click", () => showScreen(button.dataset.screen));
 });
 
