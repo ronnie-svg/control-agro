@@ -8,7 +8,23 @@ export function renderCropsScreen() {
         <h2>Parcelas y cultivos</h2>
       </div>
 
+      <section class="module-summary" aria-label="Resumen de cultivos">
+        <div>
+          <span>Parcelas</span>
+          <strong id="cropTotal">0</strong>
+        </div>
+        <div>
+          <span>Hectareas</span>
+          <strong id="cropHectaresTotal">0</strong>
+        </div>
+        <div>
+          <span>Cosechadas</span>
+          <strong id="harvestedTotal">0</strong>
+        </div>
+      </section>
+
       <form id="cropForm" class="form">
+        <h2>Registrar cultivo</h2>
         <label>
           Parcela
           <input id="cropParcel" placeholder="Ej. Parcela 3" required>

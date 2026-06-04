@@ -19,6 +19,10 @@ export function renderBottomNav() {
         ${icon("leaf")}
         <span>Cultivos</span>
       </button>
+      <button class="nav-action" type="button" data-screen="Ganado">
+        ${icon("cow")}
+        <span>Ganado</span>
+      </button>
     </nav>
   `;
 }

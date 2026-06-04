@@ -1,5 +1,6 @@
 const movementKey = "control-agro-movements";
 const cropsKey = "iturribero-crops";
+const livestockKey = "iturribero-livestock";
 const scriptUrlKey = "control-agro-script-url";
 
 export const defaultScriptUrl = "https://script.google.com/macros/s/AKfycbz06zQqqae3xaHIXWtFvIemTCqO8zovpckmFi9OHcQlqh6U3fFn6ugG61dk6Hxbxv-X/exec";
@@ -26,6 +27,14 @@ export function getCrops() {
 
 export function saveCrops(crops) {
   writeList(cropsKey, crops);
+}
+
+export function getLivestock() {
+  return readList(livestockKey);
+}
+
+export function saveLivestock(animals) {
+  writeList(livestockKey, animals);
 }
 
 export function getScriptUrl() {

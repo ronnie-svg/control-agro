@@ -5,13 +5,16 @@ import { renderHomeScreen } from "./screens/home.js";
 import { renderReportScreen } from "./screens/report.js";
 import { renderMovementFormScreen } from "./screens/movement-form.js";
 import { renderCropsScreen } from "./screens/crops.js";
+import { renderLivestockScreen } from "./screens/livestock.js";
 import { renderSettingsDialog } from "./screens/settings.js";
 import { categories } from "./data/categories.js";
 import {
   getCrops,
+  getLivestock,
   getMovements,
   getScriptUrl,
   saveCrops,
+  saveLivestock,
   saveMovements,
   saveScriptUrl
 } from "./data/storage.js";
@@ -26,6 +29,7 @@ function renderAppShell() {
     ${renderReportScreen()}
     ${renderHomeScreen()}
     ${renderCropsScreen()}
+    ${renderLivestockScreen()}
     ${renderMovementFormScreen()}
     ${renderSettingsDialog()}
     ${renderBottomNav()}
@@ -61,17 +65,42 @@ function showScreen(screen) {
         ? panel.dataset.panel === "Resumen"
         : screen === "Cultivos"
           ? panel.dataset.panel === "Cultivos"
-          : panel.dataset.panel === "Movimiento";
+          : screen === "Ganado"
+            ? panel.dataset.panel === "Ganado"
+            : panel.dataset.panel === "Movimiento";
     panel.classList.toggle("hidden", !shouldShow);
   });
 
   if (screen === "Resumen") updateReport();
   if (screen === "Cultivos") renderCrops();
+  if (screen === "Ganado") renderLivestock();
 
-  if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Cultivos") {
+  if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Cultivos" && screen !== "Ganado") {
     setType(screen);
     document.querySelector("#amount").focus();
   }
+}
+
+function updateLivestockSummary() {
+  const activeAnimals = getLivestock().filter((animal) => animal.status === "Activo");
+  const cows = activeAnimals.filter((animal) => animal.type === "Vaca").length;
+  const calves = activeAnimals.filter((animal) => animal.type === "Ternero").length;
+
+  document.querySelector("#livestockTotal").textContent = activeAnimals.length;
+  document.querySelector("#cowTotal").textContent = cows;
+  document.querySelector("#calfTotal").textContent = calves;
+}
+
+function updateCropSummary() {
+  const crops = getCrops();
+  const hectares = crops.reduce((sum, crop) => sum + (Number(crop.hectares) || 0), 0);
+  const harvested = crops.filter((crop) => crop.harvestDate || crop.production).length;
+
+  document.querySelector("#cropTotal").textContent = crops.length;
+  document.querySelector("#cropHectaresTotal").textContent = hectares.toLocaleString("es-ES", {
+    maximumFractionDigits: 2
+  });
+  document.querySelector("#harvestedTotal").textContent = harvested;
 }
 
 function updateSummary() {
@@ -156,6 +185,7 @@ function renderRecent() {
 }
 
 function renderCrops() {
+  updateCropSummary();
   const crops = getCrops().slice(0, 10);
   const cropList = document.querySelector("#cropList");
   cropList.innerHTML = "";
@@ -177,6 +207,32 @@ function renderCrops() {
       <div class="movement-meta">${[crop.harvestDate ? `cosecha ${crop.harvestDate}` : "", crop.production, crop.notes].filter(Boolean).join(" - ")}</div>
     `;
     cropList.append(item);
+  });
+}
+
+function renderLivestock() {
+  updateLivestockSummary();
+  const animals = getLivestock().slice(0, 12);
+  const livestockList = document.querySelector("#livestockList");
+  livestockList.innerHTML = "";
+
+  if (!animals.length) {
+    livestockList.innerHTML = '<p class="status">Todavia no hay animales registrados.</p>';
+    return;
+  }
+
+  animals.forEach((animal) => {
+    const item = document.createElement("article");
+    item.className = "movement";
+    item.innerHTML = `
+      <div class="movement-main">
+        <span>${animal.ref} - ${animal.type}</span>
+        <span>${animal.status}</span>
+      </div>
+      <div class="movement-meta">${[animal.sex, animal.birthDate ? `nac. ${animal.birthDate}` : "", animal.group].filter(Boolean).join(" - ")}</div>
+      <div class="movement-meta">${animal.notes || ""}</div>
+    `;
+    livestockList.append(item);
   });
 }
 
@@ -223,6 +279,7 @@ function bindEvents() {
   document.querySelector("#backHome").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#backHomeFromReport").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#backHomeFromCrops").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#backHomeFromLivestock").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#exportButton").addEventListener("click", exportCsv);
 
   document.querySelector("#settingsButton").addEventListener("click", () => {
@@ -235,7 +292,44 @@ function bindEvents() {
   });
 
   document.querySelector("#cropForm").addEventListener("submit", handleCropSubmit);
+  document.querySelector("#livestockForm").addEventListener("submit", handleLivestockSubmit);
   document.querySelector("#movementForm").addEventListener("submit", handleMovementSubmit);
+}
+
+async function handleLivestockSubmit(event) {
+  event.preventDefault();
+
+  const animal = {
+    recordKind: "livestock",
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    ref: document.querySelector("#animalRef").value.trim(),
+    type: document.querySelector("#animalType").value,
+    sex: document.querySelector("#animalSex").value,
+    birthDate: document.querySelector("#animalBirthDate").value,
+    group: document.querySelector("#animalGroup").value.trim(),
+    status: document.querySelector("#animalStatus").value,
+    notes: document.querySelector("#animalNotes").value.trim()
+  };
+
+  const livestockStatus = document.querySelector("#livestockStatus");
+  if (!animal.ref || !animal.type || !animal.status) {
+    livestockStatus.textContent = "Revisa identificador, tipo y estado.";
+    return;
+  }
+
+  saveLivestock([animal, ...getLivestock()]);
+  renderLivestock();
+  livestockStatus.textContent = "Guardado en el movil.";
+
+  try {
+    await sendToSheet(animal);
+    livestockStatus.textContent = "Guardado en el movil y enviado a Google Sheets.";
+  } catch {
+    livestockStatus.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
+  }
+
+  document.querySelector("#livestockForm").reset();
 }
 
 async function handleCropSubmit(event) {
@@ -305,6 +399,7 @@ async function handleMovementSubmit(event) {
   saveMovements([{ ...movement, attachmentData: "" }, ...getMovements()]);
   updateSummary();
   renderRecent();
+  renderLivestock();
   statusText.textContent = "Guardado en el movil.";
 
   try {

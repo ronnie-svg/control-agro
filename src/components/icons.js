@@ -29,6 +29,13 @@ export function renderIconSprite() {
         <path d="M19 12H5"/>
         <path d="m12 19-7-7 7-7"/>
       </symbol>
+      <symbol id="icon-cow" viewBox="0 0 24 24">
+        <path d="M6 8c-2 0-3-2-3-4 3 0 4 2 4 4"/>
+        <path d="M18 8c2 0 3-2 3-4-3 0-4 2-4 4"/>
+        <path d="M5 11c0-3 2.5-5 7-5s7 2 7 5v4c0 3-2.5 5-7 5s-7-2-7-5v-4Z"/>
+        <path d="M9 12h.01M15 12h.01"/>
+        <path d="M10 16h4"/>
+      </symbol>
     </svg>
   `;
 }
