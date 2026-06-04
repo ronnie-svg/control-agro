@@ -147,6 +147,15 @@ function renderBreakdownRows(rows) {
     .join("");
 }
 
+function renderMiniBreakdown(rows) {
+  const visibleRows = rows.filter(([, value]) => value !== 0 && value !== "0 ha");
+  if (!visibleRows.length) return '<small>Todavia sin datos.</small>';
+
+  return visibleRows
+    .map(([label, value]) => `<small><span>${label}</span><b>${value}</b></small>`)
+    .join("");
+}
+
 function updateSummary() {
   const now = new Date();
   const movements = getMovements().filter((movement) => {
@@ -201,6 +210,39 @@ function updateReport() {
   report.innerHTML = rows.length
     ? rows.map(([category, total]) => `<div class="category-row"><span>${category}</span><strong>${money(total)}</strong></div>`).join("")
     : '<p class="status">Todavia no hay datos para resumir.</p>';
+  updateOperationsReport();
+}
+
+function updateOperationsReport() {
+  const crops = getCrops();
+  const hectares = crops.reduce((sum, crop) => sum + (Number(crop.hectares) || 0), 0);
+  const hectaresByCrop = crops.reduce((grouped, crop) => {
+    const cropName = crop.crop || "Sin cultivo";
+    grouped[cropName] = (grouped[cropName] || 0) + (Number(crop.hectares) || 0);
+    return grouped;
+  }, {});
+
+  const activeAnimals = getLivestock().filter((animal) => animal.status === "Activo");
+  const livestockByType = countBy(activeAnimals, "type");
+
+  document.querySelector("#reportCropHectares").textContent = `${hectares.toLocaleString("es-ES", { maximumFractionDigits: 2 })} ha`;
+  document.querySelector("#reportCropParcels").textContent = crops.length;
+  document.querySelector("#reportCropBreakdown").innerHTML = renderMiniBreakdown(
+    Object.entries(hectaresByCrop)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map(([label, value]) => [label, `${value.toLocaleString("es-ES", { maximumFractionDigits: 2 })} ha`])
+  );
+
+  document.querySelector("#reportLivestockActive").textContent = activeAnimals.length;
+  document.querySelector("#reportLivestockCows").textContent = livestockByType.Vaca || 0;
+  document.querySelector("#reportLivestockCalves").textContent = livestockByType.Ternero || 0;
+  document.querySelector("#reportLivestockBreakdown").innerHTML = renderMiniBreakdown([
+    ["Vacas", livestockByType.Vaca || 0],
+    ["Toros", livestockByType.Toro || 0],
+    ["Terneros", livestockByType.Ternero || 0],
+    ["Novillas", livestockByType.Novilla || 0]
+  ]);
 }
 
 function renderRecent() {

@@ -18,6 +18,11 @@ export function renderAddScreen() {
         <h2>Anadir</h2>
       </div>
 
+      <div class="screen-intro">
+        <span>Nuevo registro</span>
+        <strong>Elige que quieres anadir</strong>
+      </div>
+
       <div class="add-options" aria-label="Elegir que anadir">
         ${addOptions.map((option) => `
           <button class="home-action ${option.className}" type="button" data-screen="${option.screen}">

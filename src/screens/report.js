@@ -42,6 +42,21 @@ export function renderReportScreen() {
       </div>
       <h2>Por categoria</h2>
       <div id="categoryReport" class="category-report"></div>
+      <h2>Campo y ganado</h2>
+      <div class="operations-summary">
+        <article>
+          <span>Cultivos</span>
+          <strong id="reportCropHectares">0 ha</strong>
+          <small><b id="reportCropParcels">0</b> parcelas registradas</small>
+          <div id="reportCropBreakdown" class="mini-breakdown"></div>
+        </article>
+        <article>
+          <span>Ganado activo</span>
+          <strong id="reportLivestockActive">0</strong>
+          <small><b id="reportLivestockCows">0</b> vacas y <b id="reportLivestockCalves">0</b> terneros</small>
+          <div id="reportLivestockBreakdown" class="mini-breakdown"></div>
+        </article>
+      </div>
       <div class="section-title">
         <h2>Ultimos movimientos</h2>
         <button id="exportButton" type="button">Exportar CSV</button>

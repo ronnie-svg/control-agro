@@ -255,6 +255,28 @@ label {
   font-size: 1.12rem;
 }
 
+.screen-intro {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 14px;
+  box-shadow: var(--shadow-soft);
+}
+
+.screen-intro span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.screen-intro strong {
+  color: var(--green);
+  font-size: 1.08rem;
+}
+
 .home-action {
   display: flex;
   flex-direction: column;
@@ -536,6 +558,48 @@ label {
 .category-report {
   display: grid;
   gap: 8px;
+}
+
+.operations-summary {
+  display: grid;
+  gap: 8px;
+}
+
+.operations-summary article {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.operations-summary span,
+.operations-summary small {
+  color: var(--muted);
+}
+
+.operations-summary strong {
+  color: var(--green);
+  font-size: 1.35rem;
+}
+
+.mini-breakdown {
+  display: grid;
+  gap: 5px;
+}
+
+.mini-breakdown small {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 6px;
+}
+
+.mini-breakdown b {
+  color: var(--text);
 }
 
 .form {
