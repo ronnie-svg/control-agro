@@ -1,9 +1,10 @@
-const cacheName = "control-agro-v17";
+const cacheName = "control-agro-v18";
 const assets = [
   "./index.html",
   "./styles.css",
   "./manifest.webmanifest",
   "./icon.svg",
+  "./Iturriberoabereaklogo.svg",
   "./src/main.js",
   "./src/components/bottom-nav.js",
   "./src/components/header.js",
