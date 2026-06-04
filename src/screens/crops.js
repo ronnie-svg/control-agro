@@ -2,7 +2,9 @@ export function renderCropsScreen() {
   return `
     <section class="crops screen hidden" data-panel="Cultivos">
       <div class="screen-header">
-        <button class="secondary small" id="backHomeFromCrops" type="button">Volver</button>
+        <button class="back-button" id="backHomeFromCrops" type="button" aria-label="Volver al inicio">
+          <svg><use href="#icon-arrow-left"></use></svg>
+        </button>
         <h2>Parcelas y cultivos</h2>
       </div>
 

@@ -1,7 +1,12 @@
 export function renderMovementFormScreen() {
   return `
     <form id="movementForm" class="form screen hidden" data-panel="Movimiento">
-      <h2 id="formTitle">Nuevo ingreso</h2>
+      <div class="screen-header form-header">
+        <button class="back-button" id="backHome" type="button" aria-label="Volver al inicio">
+          <svg><use href="#icon-arrow-left"></use></svg>
+        </button>
+        <h2 id="formTitle">Nuevo ingreso</h2>
+      </div>
       <input type="hidden" id="type" value="Ingreso">
 
       <label>
@@ -51,10 +56,7 @@ export function renderMovementFormScreen() {
         <input id="attachment" name="attachment" type="file" accept="image/*,.pdf">
       </label>
 
-      <div class="form-actions">
-        <button class="secondary" id="backHome" type="button">Volver</button>
-        <button class="submit" type="submit">Guardar</button>
-      </div>
+      <button class="submit" type="submit">Guardar</button>
       <p class="status" id="status" role="status"></p>
     </form>
   `;

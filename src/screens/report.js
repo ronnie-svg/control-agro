@@ -17,7 +17,9 @@ export function renderReportScreen() {
 
     <section class="report screen hidden" data-panel="Resumen">
       <div class="screen-header">
-        <button class="secondary small" id="backHomeFromReport" type="button">Volver</button>
+        <button class="back-button" id="backHomeFromReport" type="button" aria-label="Volver al inicio">
+          <svg><use href="#icon-arrow-left"></use></svg>
+        </button>
         <h2>Resumen</h2>
       </div>
       <div class="report-grid">
