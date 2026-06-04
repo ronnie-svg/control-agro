@@ -32,17 +32,17 @@ export function renderCropsScreen() {
         </label>
 
         <label>
-          Extension del terreno (ha)
+          Extensión del terreno (ha)
           <input id="cropHectares" inputmode="decimal" placeholder="Ej. 12,5" required>
         </label>
 
         <label>
           Cultivo sembrado
-          <input id="cropName" placeholder="Ej. trigo, cebada, maiz" required>
+          <input id="cropName" placeholder="Ej. trigo, cebada, maíz" required>
         </label>
 
         <label>
-          Campana
+          Campaña
           <input id="cropCampaign" placeholder="Ej. 2026" required>
         </label>
 
@@ -57,7 +57,7 @@ export function renderCropsScreen() {
         </label>
 
         <label>
-          Produccion cosechada
+          Producción cosechada
           <input id="cropProduction" inputmode="decimal" placeholder="Ej. 48500 kg">
         </label>
 
@@ -71,7 +71,7 @@ export function renderCropsScreen() {
       </form>
 
       <div class="section-title crop-title">
-        <h2>Ultimas parcelas</h2>
+        <h2>Últimas parcelas</h2>
       </div>
       <div id="cropList" class="recent-list"></div>
     </section>

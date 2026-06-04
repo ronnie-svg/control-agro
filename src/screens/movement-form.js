@@ -18,7 +18,7 @@ export function renderMovementFormScreen() {
       </label>
 
       <label>
-        Categoria
+        Categoría
         <select id="category" name="category" required></select>
       </label>
 
@@ -31,8 +31,8 @@ export function renderMovementFormScreen() {
         Actividad
         <select id="activity" name="activity" required>
           <option>Agricultura</option>
-          <option>Ganaderia</option>
-          <option>Comun</option>
+          <option>Ganadería</option>
+          <option>Común</option>
         </select>
       </label>
 
@@ -47,7 +47,7 @@ export function renderMovementFormScreen() {
       </label>
 
       <label>
-        Nota rapida
+        Nota rápida
         <textarea id="notes" name="notes" rows="3" placeholder="Factura, concepto, detalle importante"></textarea>
       </label>
 

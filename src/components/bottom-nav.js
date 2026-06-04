@@ -2,7 +2,7 @@ import { icon } from "./icons.js";
 
 export function renderBottomNav() {
   return `
-    <nav class="bottom-nav" aria-label="Navegacion principal">
+    <nav class="bottom-nav" aria-label="Navegación principal">
       <button class="nav-action active" type="button" data-screen="Inicio">
         ${icon("home")}
         <span>Inicio</span>
@@ -13,7 +13,7 @@ export function renderBottomNav() {
       </button>
       <button class="nav-action" type="button" data-screen="Anadir">
         ${icon("plus")}
-        <span>Anadir</span>
+        <span>Añadir</span>
       </button>
       <button class="nav-action" type="button" data-screen="Cultivos">
         ${icon("leaf")}

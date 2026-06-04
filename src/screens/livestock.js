@@ -73,7 +73,7 @@ export function renderLivestockScreen() {
 
         <label>
           Notas
-          <textarea id="animalNotes" rows="3" placeholder="Sanidad, cubricion, parto, observaciones"></textarea>
+          <textarea id="animalNotes" rows="3" placeholder="Sanidad, cubrición, parto, observaciones"></textarea>
         </label>
 
         <button class="submit" type="submit">Guardar animal</button>
@@ -81,7 +81,7 @@ export function renderLivestockScreen() {
       </form>
 
       <div class="section-title crop-title">
-        <h2>Ultimos animales</h2>
+        <h2>Últimos animales</h2>
       </div>
       <div id="livestockList" class="recent-list"></div>
     </section>

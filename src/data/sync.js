@@ -54,7 +54,7 @@ export async function syncRecord(record) {
       attempts: item.attempts + 1,
       lastMessage: result.confirmed
         ? "Confirmado por Google Sheets."
-        : "Envio intentado. Revisa la hoja para confirmar.",
+        : "Envío intentado. Revisa la hoja para confirmar.",
       record: withoutAttachmentData(record)
     });
     return result;

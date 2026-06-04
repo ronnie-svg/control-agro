@@ -139,7 +139,7 @@ function countBy(items, key) {
 function renderBreakdownRows(rows) {
   const visibleRows = rows.filter(([, value]) => value !== 0 && value !== "0 ha");
   if (!visibleRows.length) {
-    return '<p class="status">Todavia no hay datos para resumir.</p>';
+    return '<p class="status">Todavía no hay datos para resumir.</p>';
   }
 
   return visibleRows
@@ -149,7 +149,7 @@ function renderBreakdownRows(rows) {
 
 function renderMiniBreakdown(rows) {
   const visibleRows = rows.filter(([, value]) => value !== 0 && value !== "0 ha");
-  if (!visibleRows.length) return '<small>Todavia sin datos.</small>';
+  if (!visibleRows.length) return '<small>Todavía sin datos.</small>';
 
   return visibleRows
     .map(([label, value]) => `<small><span>${label}</span><b>${value}</b></small>`)
@@ -180,9 +180,9 @@ function updateSummary() {
 }
 
 function syncStatusText(result) {
-  if (result.confirmed) return "Guardado en el movil y confirmado en Google Sheets.";
-  if (result.attempted) return "Guardado en el movil. Envio intentado; revisa Google Sheets.";
-  return "Guardado en el movil. Queda pendiente de sincronizar.";
+  if (result.confirmed) return "Guardado en el móvil y confirmado en Google Sheets.";
+  if (result.attempted) return "Guardado en el móvil. Envío intentado; revisa Google Sheets.";
+  return "Guardado en el móvil. Queda pendiente de sincronizar.";
 }
 
 function updateReport() {
@@ -215,7 +215,7 @@ function updateReport() {
   const report = document.querySelector("#categoryReport");
   report.innerHTML = rows.length
     ? rows.map(([category, total]) => `<div class="category-row"><span>${category}</span><strong>${money(total)}</strong></div>`).join("")
-    : '<p class="status">Todavia no hay datos para resumir.</p>';
+    : '<p class="status">Todavía no hay datos para resumir.</p>';
   updateOperationsReport();
 }
 
@@ -268,10 +268,10 @@ function updateSyncPanel() {
             <strong>${item.label}</strong>
             <span>${syncStatusLabel(item.status)}</span>
           </div>
-          <small>${item.lastMessage || "Pendiente de envio."}</small>
+          <small>${item.lastMessage || "Pendiente de envío."}</small>
         </article>
       `).join("")
-    : '<p class="status">Todavia no hay envios registrados.</p>';
+    : '<p class="status">Todavía no hay envíos registrados.</p>';
 }
 
 function syncStatusLabel(status) {
@@ -286,7 +286,7 @@ function renderRecent() {
   recentList.innerHTML = "";
 
   if (!movements.length) {
-    recentList.innerHTML = '<p class="status">Todavia no hay movimientos.</p>';
+    recentList.innerHTML = '<p class="status">Todavía no hay movimientos.</p>';
     return;
   }
 
@@ -312,7 +312,7 @@ function renderCrops() {
   cropList.innerHTML = "";
 
   if (!crops.length) {
-    cropList.innerHTML = '<p class="status">Todavia no hay parcelas registradas.</p>';
+    cropList.innerHTML = '<p class="status">Todavía no hay parcelas registradas.</p>';
     return;
   }
 
@@ -324,7 +324,7 @@ function renderCrops() {
         <span>${crop.parcel} - ${crop.crop}</span>
         <span>${crop.hectares} ha</span>
       </div>
-      <div class="movement-meta">Campana ${crop.campaign}${crop.sowDate ? ` - siembra ${crop.sowDate}` : ""}</div>
+      <div class="movement-meta">Campaña ${crop.campaign}${crop.sowDate ? ` - siembra ${crop.sowDate}` : ""}</div>
       <div class="movement-meta">${[crop.harvestDate ? `cosecha ${crop.harvestDate}` : "", crop.production, crop.notes].filter(Boolean).join(" - ")}</div>
     `;
     cropList.append(item);
@@ -338,7 +338,7 @@ function renderLivestock() {
   livestockList.innerHTML = "";
 
   if (!animals.length) {
-    livestockList.innerHTML = '<p class="status">Todavia no hay animales registrados.</p>';
+    livestockList.innerHTML = '<p class="status">Todavía no hay animales registrados.</p>';
     return;
   }
 
@@ -366,7 +366,7 @@ function resetMovementForm() {
 }
 
 function exportCsv() {
-  const headers = ["fecha", "tipo", "categoria", "importe", "actividad", "parcela_animal_lote", "proveedor_cliente", "notas", "adjunto"];
+  const headers = ["fecha", "tipo", "categoría", "importe", "actividad", "parcela_animal_lote", "proveedor_cliente", "notas", "adjunto"];
   const rows = getMovements().map((movement) => [
     movement.date,
     movement.type,
@@ -453,7 +453,7 @@ async function handleLivestockSubmit(event) {
 
   saveLivestock([animal, ...getLivestock()]);
   renderLivestock();
-  livestockStatus.textContent = "Guardado en el movil.";
+  livestockStatus.textContent = "Guardado en el móvil.";
 
   const result = await syncRecord(animal);
   livestockStatus.textContent = syncStatusText(result);
@@ -481,13 +481,13 @@ async function handleCropSubmit(event) {
 
   const cropStatus = document.querySelector("#cropStatus");
   if (!crop.parcel || !crop.crop || !crop.campaign || !Number.isFinite(crop.hectares) || crop.hectares <= 0) {
-    cropStatus.textContent = "Revisa parcela, hectareas, cultivo y campana.";
+    cropStatus.textContent = "Revisa parcela, hectáreas, cultivo y campaña.";
     return;
   }
 
   saveCrops([crop, ...getCrops()]);
   renderCrops();
-  cropStatus.textContent = "Guardado en el movil.";
+  cropStatus.textContent = "Guardado en el móvil.";
 
   const result = await syncRecord(crop);
   cropStatus.textContent = syncStatusText(result);
@@ -527,7 +527,7 @@ async function handleMovementSubmit(event) {
   updateSummary();
   renderRecent();
   renderLivestock();
-  statusText.textContent = "Guardado en el movil.";
+  statusText.textContent = "Guardado en el móvil.";
 
   const result = await syncRecord(movement);
   statusText.textContent = syncStatusText(result);

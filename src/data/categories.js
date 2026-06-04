@@ -3,19 +3,19 @@ export const categories = {
     "Venta terneros",
     "Venta ganado",
     "Venta cereal",
-    "PAC / subvencion",
+    "PAC / subvención",
     "Otros ingresos"
   ],
   Gasto: [
     "Pienso",
-    "Gasoleo",
+    "Gasóleo",
     "Veterinario",
     "Semillas",
     "Abonos",
     "Fitosanitarios",
     "Reparaciones",
     "Seguros",
-    "Gestoria",
+    "Gestoría",
     "Otros gastos"
   ],
   Inversion: [
@@ -23,6 +23,6 @@ export const categories = {
     "Instalaciones",
     "Compra ganado",
     "Mejora finca",
-    "Otra inversion"
+    "Otra inversión"
   ]
 };

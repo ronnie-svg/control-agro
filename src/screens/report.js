@@ -24,23 +24,23 @@ export function renderReportScreen() {
       </div>
       <div class="report-grid">
         <div>
-          <span>Resultado del ano</span>
+          <span>Resultado del año</span>
           <strong id="yearResult">0,00 EUR</strong>
         </div>
         <div>
-          <span>Ingresos del ano</span>
+          <span>Ingresos del año</span>
           <strong id="yearIncome">0,00 EUR</strong>
         </div>
         <div>
-          <span>Gastos del ano</span>
+          <span>Gastos del año</span>
           <strong id="yearExpenses">0,00 EUR</strong>
         </div>
         <div>
-          <span>Inversiones del ano</span>
+          <span>Inversiones del año</span>
           <strong id="yearInvestments">0,00 EUR</strong>
         </div>
       </div>
-      <h2>Por categoria</h2>
+      <h2>Por categoría</h2>
       <div id="categoryReport" class="category-report"></div>
       <h2>Campo y ganado</h2>
       <div class="operations-summary">
@@ -58,7 +58,7 @@ export function renderReportScreen() {
         </article>
       </div>
       <div class="section-title">
-        <h2>Ultimos movimientos</h2>
+        <h2>Últimos movimientos</h2>
         <button id="exportButton" type="button">Exportar CSV</button>
       </div>
       <div id="recentList" class="recent-list"></div>

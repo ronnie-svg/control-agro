@@ -7,8 +7,8 @@ export function renderSettingsDialog() {
           URL de Apps Script
           <input id="scriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
         </label>
-        <p>Los datos se guardan primero en este movil. El envio a Google Sheets queda registrado aqui.</p>
-        <section class="sync-panel" aria-label="Estado de sincronizacion">
+        <p>Los datos se guardan primero en este móvil. El envío a Google Sheets queda registrado aquí.</p>
+        <section class="sync-panel" aria-label="Estado de sincronización">
           <div>
             <span>Pendientes</span>
             <strong id="syncPending">0</strong>
