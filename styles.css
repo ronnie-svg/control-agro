@@ -63,16 +63,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 6px 0 10px;
-}
-
-.eyebrow {
-  margin: 0 0 4px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  padding: 4px 0 8px;
 }
 
 h1,
@@ -81,21 +72,28 @@ h2 {
   letter-spacing: 0;
 }
 
-h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.55rem, 6.4vw, 2.1rem);
-  line-height: 1;
-  max-width: 12ch;
-}
-
 h2 {
   font-size: 1.05rem;
 }
 
-.subtitle {
-  margin: 5px 0 0;
-  color: var(--muted);
-  font-size: 0.82rem;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.brand img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.brand span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .icon-button,
@@ -120,7 +118,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 6px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .summary div {
@@ -129,8 +127,8 @@ h2 {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 6px;
-  min-height: 64px;
-  padding: 9px;
+  min-height: 58px;
+  padding: 8px;
   box-shadow: var(--shadow);
 }
 
@@ -147,11 +145,11 @@ h2 {
 .summary span,
 label {
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.76rem;
 }
 
 .summary strong {
-  font-size: 0.95rem;
+  font-size: 0.86rem;
   color: var(--green);
   word-break: break-word;
 }
@@ -171,8 +169,8 @@ label {
 .home-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 7px;
+  margin-bottom: 0;
 }
 
 .home-action {
@@ -186,26 +184,26 @@ label {
   border-radius: 6px;
   background: var(--panel);
   color: var(--text);
-  min-height: 96px;
-  padding: 10px;
+  min-height: 88px;
+  padding: 9px;
   text-align: left;
   box-shadow: var(--shadow);
 }
 
 .home-action svg {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   color: var(--green);
 }
 
 .home-action span {
   font-weight: 800;
-  font-size: 0.98rem;
+  font-size: 0.92rem;
 }
 
 .home-action strong {
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: 0.7rem;
   font-weight: 600;
   line-height: 1.25;
 }
@@ -224,7 +222,6 @@ label {
 
 .home-action.crops-link {
   border-top-color: #6b7d3e;
-  grid-column: 1 / -1;
 }
 
 .home-action.expense svg {

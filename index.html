@@ -43,10 +43,9 @@
 
   <main class="app">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">Durana - Arrazua-Ubarrundia - Alava</p>
-        <h1>Iturribero Abereak</h1>
-        <p class="subtitle">Control de ingresos, gastos e inversiones</p>
+      <div class="brand">
+        <img src="https://www.iturriberoabereak.com/Iturriberoabereaklogo.svg" alt="Iturribero Abereak">
+        <span>Iturribero Abereak</span>
       </div>
       <button class="icon-button" id="settingsButton" type="button" aria-label="Ajustes">
         <svg><use href="#icon-cog"></use></svg>
@@ -93,6 +92,11 @@
       </div>
       <h2>Por categoria</h2>
       <div id="categoryReport" class="category-report"></div>
+      <div class="section-title">
+        <h2>Ultimos movimientos</h2>
+        <button id="exportButton" type="button">Exportar CSV</button>
+      </div>
+      <div id="recentList" class="recent-list"></div>
     </section>
 
     <section class="home-actions screen" data-panel="Inicio" aria-label="Acciones rapidas">
@@ -237,14 +241,6 @@
       </div>
       <p class="status" id="status" role="status"></p>
     </form>
-
-    <section class="recent screen" data-panel="Inicio">
-      <div class="section-title">
-        <h2>Ultimos movimientos</h2>
-        <button id="exportButton" type="button">Exportar CSV</button>
-      </div>
-      <div id="recentList" class="recent-list"></div>
-    </section>
 
     <dialog id="settingsDialog">
       <form method="dialog" class="settings">
