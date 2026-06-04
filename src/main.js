@@ -1,83 +1,42 @@
-const categories = {
-  Ingreso: [
-    "Venta terneros",
-    "Venta ganado",
-    "Venta cereal",
-    "PAC / subvencion",
-    "Otros ingresos"
-  ],
-  Gasto: [
-    "Pienso",
-    "Gasoleo",
-    "Veterinario",
-    "Semillas",
-    "Abonos",
-    "Fitosanitarios",
-    "Reparaciones",
-    "Seguros",
-    "Gestoria",
-    "Otros gastos"
-  ],
-  Inversion: [
-    "Maquinaria",
-    "Instalaciones",
-    "Compra ganado",
-    "Mejora finca",
-    "Otra inversion"
-  ]
-};
+import { renderIconSprite } from "./components/icons.js";
+import { renderHeader } from "./components/header.js";
+import { renderBottomNav } from "./components/bottom-nav.js";
+import { renderHomeScreen } from "./screens/home.js";
+import { renderReportScreen } from "./screens/report.js";
+import { renderMovementFormScreen } from "./screens/movement-form.js";
+import { renderCropsScreen } from "./screens/crops.js";
+import { renderSettingsDialog } from "./screens/settings.js";
+import { categories } from "./data/categories.js";
+import {
+  getCrops,
+  getMovements,
+  getScriptUrl,
+  saveCrops,
+  saveMovements,
+  saveScriptUrl
+} from "./data/storage.js";
+import { sendToSheet } from "./data/api.js";
+import { money, parseAmount } from "./utils/format.js";
+import { readAttachment } from "./utils/files.js";
 
-const storageKey = "control-agro-movements";
-const cropsStorageKey = "iturribero-crops";
-const scriptUrlKey = "control-agro-script-url";
-const defaultScriptUrl = "https://script.google.com/macros/s/AKfycbz06zQqqae3xaHIXWtFvIemTCqO8zovpckmFi9OHcQlqh6U3fFn6ugG61dk6Hxbxv-X/exec";
-
-const form = document.querySelector("#movementForm");
-const typeInput = document.querySelector("#type");
-const categorySelect = document.querySelector("#category");
-const statusText = document.querySelector("#status");
-const recentList = document.querySelector("#recentList");
-const scriptUrlInput = document.querySelector("#scriptUrl");
-const settingsDialog = document.querySelector("#settingsDialog");
-const formTitle = document.querySelector("#formTitle");
-const cropForm = document.querySelector("#cropForm");
-const cropStatus = document.querySelector("#cropStatus");
-const cropList = document.querySelector("#cropList");
-
-document.querySelector("#date").valueAsDate = new Date();
-scriptUrlInput.value = localStorage.getItem(scriptUrlKey) || defaultScriptUrl;
-
-function money(value) {
-  return new Intl.NumberFormat("es-ES", {
-    style: "currency",
-    currency: "EUR"
-  }).format(value || 0);
-}
-
-function parseAmount(value) {
-  return Number(String(value).replace(",", ".").replace(/[^\d.-]/g, ""));
-}
-
-function getMovements() {
-  return JSON.parse(localStorage.getItem(storageKey) || "[]");
-}
-
-function saveMovements(movements) {
-  localStorage.setItem(storageKey, JSON.stringify(movements));
-}
-
-function getCrops() {
-  return JSON.parse(localStorage.getItem(cropsStorageKey) || "[]");
-}
-
-function saveCrops(crops) {
-  localStorage.setItem(cropsStorageKey, JSON.stringify(crops));
+function renderAppShell() {
+  document.querySelector("#app").innerHTML = `
+    ${renderIconSprite()}
+    ${renderHeader()}
+    ${renderReportScreen()}
+    ${renderHomeScreen()}
+    ${renderCropsScreen()}
+    ${renderMovementFormScreen()}
+    ${renderSettingsDialog()}
+    ${renderBottomNav()}
+  `;
 }
 
 function setType(type) {
-  typeInput.value = type;
-  formTitle.textContent = `Nuevo ${type.toLowerCase()}`;
+  document.querySelector("#type").value = type;
+  document.querySelector("#formTitle").textContent = `Nuevo ${type.toLowerCase()}`;
 
+  const categorySelect = document.querySelector("#category");
   categorySelect.innerHTML = "";
   categories[type].forEach((category) => {
     const option = document.createElement("option");
@@ -106,13 +65,8 @@ function showScreen(screen) {
     panel.classList.toggle("hidden", !shouldShow);
   });
 
-  if (screen === "Resumen") {
-    updateReport();
-  }
-
-  if (screen === "Cultivos") {
-    renderCrops();
-  }
+  if (screen === "Resumen") updateReport();
+  if (screen === "Cultivos") renderCrops();
 
   if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Cultivos") {
     setType(screen);
@@ -178,6 +132,7 @@ function updateReport() {
 
 function renderRecent() {
   const movements = getMovements().slice(0, 8);
+  const recentList = document.querySelector("#recentList");
   recentList.innerHTML = "";
 
   if (!movements.length) {
@@ -200,38 +155,9 @@ function renderRecent() {
   });
 }
 
-function readAttachment() {
-  const file = document.querySelector("#attachment").files[0];
-  if (!file) return Promise.resolve(null);
-
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve({
-      name: file.name,
-      type: file.type || "application/octet-stream",
-      data: String(reader.result).split(",")[1]
-    });
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
-}
-
-async function sendToSheet(movement) {
-  const scriptUrl = localStorage.getItem(scriptUrlKey);
-  const targetUrl = scriptUrl || defaultScriptUrl;
-  if (!targetUrl) return false;
-
-  await fetch(targetUrl, {
-    method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(movement)
-  });
-  return true;
-}
-
 function renderCrops() {
   const crops = getCrops().slice(0, 10);
+  const cropList = document.querySelector("#cropList");
   cropList.innerHTML = "";
 
   if (!crops.length) {
@@ -254,10 +180,11 @@ function renderCrops() {
   });
 }
 
-function resetForm() {
+function resetMovementForm() {
+  const form = document.querySelector("#movementForm");
   form.reset();
   document.querySelector("#date").valueAsDate = new Date();
-  setType(typeInput.value);
+  setType(document.querySelector("#type").value);
   document.querySelector("#amount").focus();
 }
 
@@ -288,19 +215,30 @@ function exportCsv() {
   URL.revokeObjectURL(url);
 }
 
-document.querySelectorAll(".home-action").forEach((button) => {
-  button.addEventListener("click", () => showScreen(button.dataset.screen));
-});
+function bindEvents() {
+  document.querySelectorAll(".home-action, .nav-action").forEach((button) => {
+    button.addEventListener("click", () => showScreen(button.dataset.screen));
+  });
 
-document.querySelectorAll(".nav-action").forEach((button) => {
-  button.addEventListener("click", () => showScreen(button.dataset.screen));
-});
+  document.querySelector("#backHome").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#backHomeFromReport").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#backHomeFromCrops").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#exportButton").addEventListener("click", exportCsv);
 
-document.querySelector("#backHome").addEventListener("click", () => showScreen("Inicio"));
-document.querySelector("#backHomeFromReport").addEventListener("click", () => showScreen("Inicio"));
-document.querySelector("#backHomeFromCrops").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#settingsButton").addEventListener("click", () => {
+    document.querySelector("#settingsDialog").showModal();
+  });
 
-cropForm.addEventListener("submit", async (event) => {
+  document.querySelector("#saveSettings").addEventListener("click", () => {
+    saveScriptUrl(document.querySelector("#scriptUrl").value);
+    document.querySelector("#settingsDialog").close();
+  });
+
+  document.querySelector("#cropForm").addEventListener("submit", handleCropSubmit);
+  document.querySelector("#movementForm").addEventListener("submit", handleMovementSubmit);
+}
+
+async function handleCropSubmit(event) {
   event.preventDefault();
 
   const crop = {
@@ -317,6 +255,7 @@ cropForm.addEventListener("submit", async (event) => {
     notes: document.querySelector("#cropNotes").value.trim()
   };
 
+  const cropStatus = document.querySelector("#cropStatus");
   if (!crop.parcel || !crop.crop || !crop.campaign || !Number.isFinite(crop.hectares) || crop.hectares <= 0) {
     cropStatus.textContent = "Revisa parcela, hectareas, cultivo y campana.";
     return;
@@ -333,12 +272,13 @@ cropForm.addEventListener("submit", async (event) => {
     cropStatus.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
   }
 
-  cropForm.reset();
-});
+  document.querySelector("#cropForm").reset();
+}
 
-form.addEventListener("submit", async (event) => {
+async function handleMovementSubmit(event) {
   event.preventDefault();
   const amount = parseAmount(document.querySelector("#amount").value);
+  const statusText = document.querySelector("#status");
 
   if (!Number.isFinite(amount) || amount <= 0) {
     statusText.textContent = "Revisa el importe.";
@@ -350,8 +290,8 @@ form.addEventListener("submit", async (event) => {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     date: document.querySelector("#date").value,
-    type: typeInput.value,
-    category: categorySelect.value,
+    type: document.querySelector("#type").value,
+    category: document.querySelector("#category").value,
     amount,
     activity: document.querySelector("#activity").value,
     asset: document.querySelector("#asset").value.trim(),
@@ -362,41 +302,33 @@ form.addEventListener("submit", async (event) => {
     attachmentData: attachment ? attachment.data : ""
   };
 
-  const localMovement = {
-    ...movement,
-    attachmentData: ""
-  };
-
-  saveMovements([localMovement, ...getMovements()]);
+  saveMovements([{ ...movement, attachmentData: "" }, ...getMovements()]);
   updateSummary();
   renderRecent();
   statusText.textContent = "Guardado en el movil.";
 
   try {
-    const sent = await sendToSheet(movement);
-    if (sent) statusText.textContent = "Guardado en el movil y enviado a Google Sheets.";
+    await sendToSheet(movement);
+    statusText.textContent = "Guardado en el movil y enviado a Google Sheets.";
   } catch {
     statusText.textContent = "Guardado en el movil. No se pudo enviar a Google Sheets.";
   }
 
-  resetForm();
-});
-
-document.querySelector("#settingsButton").addEventListener("click", () => {
-  settingsDialog.showModal();
-});
-
-document.querySelector("#saveSettings").addEventListener("click", () => {
-  localStorage.setItem(scriptUrlKey, scriptUrlInput.value.trim());
-  settingsDialog.close();
-});
-
-document.querySelector("#exportButton").addEventListener("click", exportCsv);
-
-setType("Ingreso");
-updateSummary();
-renderRecent();
-
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  navigator.serviceWorker.register("service-worker.js");
+  resetMovementForm();
 }
+
+function init() {
+  renderAppShell();
+  document.querySelector("#date").valueAsDate = new Date();
+  document.querySelector("#scriptUrl").value = getScriptUrl();
+  setType("Ingreso");
+  bindEvents();
+  updateSummary();
+  renderRecent();
+
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+}
+
+init();

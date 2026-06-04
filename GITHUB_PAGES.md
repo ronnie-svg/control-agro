@@ -4,12 +4,23 @@ La app visual esta en esta carpeta. Los archivos que debe tener el repositorio d
 
 - `index.html`
 - `styles.css`
-- `app.js`
 - `manifest.webmanifest`
 - `service-worker.js`
 - `icon.svg`
+- `src/`
 
 No subas como app principal los archivos de Apps Script. Apps Script se copia en Google.
+
+## Estructura
+
+`index.html` es solo la entrada de la app.
+
+La logica esta separada en:
+
+- `src/screens/`: pantallas de la app.
+- `src/components/`: piezas reutilizables.
+- `src/data/`: almacenamiento local y API.
+- `src/utils/`: formato, importes y archivos.
 
 ## Pasos
 

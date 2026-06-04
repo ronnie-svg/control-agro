@@ -1,10 +1,23 @@
-const cacheName = "control-agro-v8";
+const cacheName = "control-agro-v9";
 const assets = [
   "./index.html",
   "./styles.css",
-  "./app.js",
   "./manifest.webmanifest",
-  "./icon.svg"
+  "./icon.svg",
+  "./src/main.js",
+  "./src/components/bottom-nav.js",
+  "./src/components/header.js",
+  "./src/components/icons.js",
+  "./src/data/api.js",
+  "./src/data/categories.js",
+  "./src/data/storage.js",
+  "./src/screens/crops.js",
+  "./src/screens/home.js",
+  "./src/screens/movement-form.js",
+  "./src/screens/report.js",
+  "./src/screens/settings.js",
+  "./src/utils/files.js",
+  "./src/utils/format.js"
 ];
 
 self.addEventListener("install", (event) => {
