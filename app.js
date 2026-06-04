@@ -88,6 +88,8 @@ function setType(type) {
 }
 
 function showScreen(screen) {
+  document.querySelector(".app").scrollTo({ top: 0, behavior: "auto" });
+
   document.querySelectorAll(".nav-action").forEach((button) => {
     const active = button.dataset.screen === screen || (["Gasto", "Inversion"].includes(screen) && button.dataset.screen === "Ingreso");
     button.classList.toggle("active", active);

@@ -23,7 +23,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  min-height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
   border-top: 5px solid var(--green);
 }
 
@@ -51,8 +52,10 @@ textarea {
 .app {
   width: min(100%, 680px);
   margin: 0 auto;
-  min-height: 100vh;
-  padding: 18px 16px 104px;
+  height: calc(100dvh - 5px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 12px 12px 88px;
 }
 
 .topbar {
@@ -60,7 +63,7 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 0 18px;
+  padding: 6px 0 10px;
 }
 
 .eyebrow {
@@ -80,9 +83,9 @@ h2 {
 
 h1 {
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.9rem, 8vw, 2.7rem);
-  line-height: 0.96;
-  max-width: 9ch;
+  font-size: clamp(1.55rem, 6.4vw, 2.1rem);
+  line-height: 1;
+  max-width: 12ch;
 }
 
 h2 {
@@ -90,9 +93,9 @@ h2 {
 }
 
 .subtitle {
-  margin: 8px 0 0;
+  margin: 5px 0 0;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
 }
 
 .icon-button,
@@ -115,20 +118,19 @@ h2 {
 
 .summary {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 8px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .summary div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: grid;
   gap: 12px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 6px;
-  padding: 12px;
+  min-height: 64px;
+  padding: 9px;
   box-shadow: var(--shadow);
 }
 
@@ -145,12 +147,13 @@ h2 {
 .summary span,
 label {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
 }
 
 .summary strong {
-  font-size: 1.15rem;
+  font-size: 0.95rem;
   color: var(--green);
+  word-break: break-word;
 }
 
 .submit {
@@ -168,8 +171,8 @@ label {
 .home-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 .home-action {
@@ -183,27 +186,28 @@ label {
   border-radius: 6px;
   background: var(--panel);
   color: var(--text);
-  min-height: 126px;
-  padding: 14px;
+  min-height: 96px;
+  padding: 10px;
   text-align: left;
   box-shadow: var(--shadow);
 }
 
 .home-action svg {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   color: var(--green);
 }
 
 .home-action span {
   font-weight: 800;
-  font-size: 1.08rem;
+  font-size: 0.98rem;
 }
 
 .home-action strong {
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: 0.76rem;
   font-weight: 600;
+  line-height: 1.25;
 }
 
 .home-action.expense {
@@ -374,7 +378,7 @@ textarea {
 }
 
 .recent {
-  margin-top: 18px;
+  margin-top: 10px;
 }
 
 .section-title {
@@ -382,12 +386,14 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .recent-list {
   display: grid;
-  gap: 8px;
+  gap: 6px;
+  max-height: 150px;
+  overflow: auto;
 }
 
 .movement {
@@ -452,7 +458,7 @@ dialog::backdrop {
 .bottom-nav {
   position: fixed;
   left: 50%;
-  bottom: 12px;
+  bottom: 8px;
   z-index: 20;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -460,10 +466,10 @@ dialog::backdrop {
   width: min(calc(100% - 24px), 640px);
   transform: translateX(-50%);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
   background: rgb(255 253 247 / 94%);
   box-shadow: 0 18px 48px rgb(41 42 34 / 18%);
-  padding: 8px;
+  padding: 6px;
   backdrop-filter: blur(10px);
 }
 
@@ -471,45 +477,33 @@ dialog::backdrop {
   display: grid;
   place-items: center;
   gap: 3px;
-  min-height: 56px;
+  min-height: 50px;
   border: 0;
   border-radius: 10px;
   background: transparent;
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
 }
 
 .nav-action svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
-.nav-action.active {
+.nav-action.active,
+.nav-action.primary {
   background: var(--green-soft);
   color: var(--green);
 }
 
-.nav-action.primary {
-  background: var(--green);
-  color: #fff;
-}
-
 @media (min-width: 560px) {
-  .summary {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .summary div {
-    display: grid;
-  }
-
   .home-actions {
     grid-template-columns: repeat(5, 1fr);
   }
 
   .home-action {
-    min-height: 132px;
+    min-height: 116px;
   }
 
   .home-action.crops-link {

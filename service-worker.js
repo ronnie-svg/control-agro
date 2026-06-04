@@ -1,4 +1,4 @@
-const cacheName = "control-agro-v3";
+const cacheName = "control-agro-v4";
 const assets = [
   "./index.html",
   "./styles.css",
