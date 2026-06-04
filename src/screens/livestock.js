@@ -10,7 +10,7 @@ export function renderLivestockScreen() {
 
       <section class="module-summary" aria-label="Resumen de ganado">
         <div>
-          <span>Total</span>
+          <span>Activos</span>
           <strong id="livestockTotal">0</strong>
         </div>
         <div>
@@ -22,6 +22,7 @@ export function renderLivestockScreen() {
           <strong id="calfTotal">0</strong>
         </div>
       </section>
+      <div id="livestockTypeSummary" class="breakdown-list"></div>
 
       <form id="livestockForm" class="form">
         <h2>Registrar animal</h2>

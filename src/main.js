@@ -87,24 +87,64 @@ function showScreen(screen) {
 
 function updateLivestockSummary() {
   const activeAnimals = getLivestock().filter((animal) => animal.status === "Activo");
-  const cows = activeAnimals.filter((animal) => animal.type === "Vaca").length;
-  const calves = activeAnimals.filter((animal) => animal.type === "Ternero").length;
+  const byType = countBy(activeAnimals, "type");
+  const cows = byType.Vaca || 0;
+  const bulls = byType.Toro || 0;
+  const calves = byType.Ternero || 0;
+  const heifers = byType.Novilla || 0;
 
   document.querySelector("#livestockTotal").textContent = activeAnimals.length;
   document.querySelector("#cowTotal").textContent = cows;
   document.querySelector("#calfTotal").textContent = calves;
+  document.querySelector("#livestockTypeSummary").innerHTML = renderBreakdownRows([
+    ["Vacas", cows],
+    ["Toros", bulls],
+    ["Terneros", calves],
+    ["Novillas", heifers]
+  ]);
 }
 
 function updateCropSummary() {
   const crops = getCrops();
   const hectares = crops.reduce((sum, crop) => sum + (Number(crop.hectares) || 0), 0);
   const harvested = crops.filter((crop) => crop.harvestDate || crop.production).length;
+  const hectaresByCrop = crops.reduce((grouped, crop) => {
+    const cropName = crop.crop || "Sin cultivo";
+    grouped[cropName] = (grouped[cropName] || 0) + (Number(crop.hectares) || 0);
+    return grouped;
+  }, {});
 
   document.querySelector("#cropTotal").textContent = crops.length;
   document.querySelector("#cropHectaresTotal").textContent = hectares.toLocaleString("es-ES", {
     maximumFractionDigits: 2
   });
   document.querySelector("#harvestedTotal").textContent = harvested;
+  document.querySelector("#cropTypeSummary").innerHTML = renderBreakdownRows(
+    Object.entries(hectaresByCrop)
+      .sort((a, b) => b[1] - a[1])
+      .map(([cropName, total]) => [
+        cropName,
+        `${total.toLocaleString("es-ES", { maximumFractionDigits: 2 })} ha`
+      ])
+  );
+}
+
+function countBy(items, key) {
+  return items.reduce((grouped, item) => {
+    grouped[item[key]] = (grouped[item[key]] || 0) + 1;
+    return grouped;
+  }, {});
+}
+
+function renderBreakdownRows(rows) {
+  const visibleRows = rows.filter(([, value]) => value !== 0 && value !== "0 ha");
+  if (!visibleRows.length) {
+    return '<p class="status">Todavia no hay datos para resumir.</p>';
+  }
+
+  return visibleRows
+    .map(([label, value]) => `<div class="breakdown-row"><span>${label}</span><strong>${value}</strong></div>`)
+    .join("");
 }
 
 function updateSummary() {

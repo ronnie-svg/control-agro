@@ -479,6 +479,32 @@ label {
   font-size: 1.18rem;
 }
 
+.breakdown-list {
+  display: grid;
+  gap: 6px;
+}
+
+.breakdown-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgb(255 253 247 / 72%);
+  padding: 9px 10px;
+}
+
+.breakdown-row span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.breakdown-row strong {
+  color: var(--text);
+}
+
 .crop-title {
   margin: 4px 0 0;
 }

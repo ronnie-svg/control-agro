@@ -14,7 +14,7 @@ export function renderCropsScreen() {
           <strong id="cropTotal">0</strong>
         </div>
         <div>
-          <span>Hectareas</span>
+          <span>Total ha</span>
           <strong id="cropHectaresTotal">0</strong>
         </div>
         <div>
@@ -22,6 +22,7 @@ export function renderCropsScreen() {
           <strong id="harvestedTotal">0</strong>
         </div>
       </section>
+      <div id="cropTypeSummary" class="breakdown-list"></div>
 
       <form id="cropForm" class="form">
         <h2>Registrar cultivo</h2>
@@ -31,7 +32,7 @@ export function renderCropsScreen() {
         </label>
 
         <label>
-          Hectareas
+          Extension del terreno (ha)
           <input id="cropHectares" inputmode="decimal" placeholder="Ej. 12,5" required>
         </label>
 
