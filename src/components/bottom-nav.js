@@ -11,7 +11,7 @@ export function renderBottomNav() {
         ${icon("chart")}
         <span>Resumen</span>
       </button>
-      <button class="nav-action" type="button" data-screen="Ingreso">
+      <button class="nav-action" type="button" data-screen="Anadir">
         ${icon("plus")}
         <span>Anadir</span>
       </button>

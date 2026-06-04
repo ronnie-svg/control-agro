@@ -1,6 +1,7 @@
 import { renderIconSprite } from "./components/icons.js";
 import { renderHeader } from "./components/header.js";
 import { renderBottomNav } from "./components/bottom-nav.js";
+import { renderAddScreen } from "./screens/add.js";
 import { renderHomeScreen } from "./screens/home.js";
 import { renderReportScreen } from "./screens/report.js";
 import { renderMovementFormScreen } from "./screens/movement-form.js";
@@ -28,6 +29,7 @@ function renderAppShell() {
     ${renderHeader()}
     ${renderReportScreen()}
     ${renderHomeScreen()}
+    ${renderAddScreen()}
     ${renderCropsScreen()}
     ${renderLivestockScreen()}
     ${renderMovementFormScreen()}
@@ -54,20 +56,22 @@ function showScreen(screen) {
   document.querySelector(".app").scrollTo({ top: 0, behavior: "auto" });
 
   document.querySelectorAll(".nav-action").forEach((button) => {
-    const active = button.dataset.screen === screen || (["Gasto", "Inversion"].includes(screen) && button.dataset.screen === "Ingreso");
+    const active = button.dataset.screen === screen || (["Ingreso", "Gasto", "Inversion"].includes(screen) && button.dataset.screen === "Anadir");
     button.classList.toggle("active", active);
   });
 
   document.querySelectorAll(".screen").forEach((panel) => {
     const shouldShow = screen === "Inicio"
-      ? panel.dataset.panel === "Inicio"
-      : screen === "Resumen"
-        ? panel.dataset.panel === "Resumen"
-        : screen === "Cultivos"
-          ? panel.dataset.panel === "Cultivos"
-          : screen === "Ganado"
-            ? panel.dataset.panel === "Ganado"
-            : panel.dataset.panel === "Movimiento";
+        ? panel.dataset.panel === "Inicio"
+        : screen === "Resumen"
+          ? panel.dataset.panel === "Resumen"
+          : screen === "Anadir"
+            ? panel.dataset.panel === "Anadir"
+            : screen === "Cultivos"
+              ? panel.dataset.panel === "Cultivos"
+              : screen === "Ganado"
+                ? panel.dataset.panel === "Ganado"
+                : panel.dataset.panel === "Movimiento";
     panel.classList.toggle("hidden", !shouldShow);
   });
 
@@ -75,7 +79,7 @@ function showScreen(screen) {
   if (screen === "Cultivos") renderCrops();
   if (screen === "Ganado") renderLivestock();
 
-  if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Cultivos" && screen !== "Ganado") {
+  if (screen !== "Inicio" && screen !== "Resumen" && screen !== "Anadir" && screen !== "Cultivos" && screen !== "Ganado") {
     setType(screen);
     document.querySelector("#amount").focus();
   }
@@ -277,6 +281,7 @@ function bindEvents() {
   });
 
   document.querySelector("#backHome").addEventListener("click", () => showScreen("Inicio"));
+  document.querySelector("#backHomeFromAdd").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#backHomeFromReport").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#backHomeFromCrops").addEventListener("click", () => showScreen("Inicio"));
   document.querySelector("#backHomeFromLivestock").addEventListener("click", () => showScreen("Inicio"));
