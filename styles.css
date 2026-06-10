@@ -180,7 +180,7 @@ h2 {
   box-shadow: var(--shadow);
 }
 
-.summary div {
+.summary-card {
   display: grid;
   gap: 6px;
   background: var(--panel);
@@ -189,6 +189,8 @@ h2 {
   min-height: 54px;
   padding: 8px;
   box-shadow: none;
+  text-align: left;
+  width: 100%;
 }
 
 .summary-primary {
@@ -465,6 +467,32 @@ label {
   transform: translateX(-4px) scale(0.96);
 }
 
+.floating-back {
+  position: fixed;
+  top: 18px;
+  left: max(18px, calc(50% - 318px));
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgb(36 37 31 / 10%);
+  border-radius: 999px;
+  background: rgb(49 75 51 / 94%);
+  color: #fff;
+  box-shadow: 0 16px 32px rgb(20 31 21 / 24%);
+  backdrop-filter: blur(12px);
+}
+
+.floating-back:hover {
+  background: #243b27;
+  transform: translateY(-1px);
+}
+
+.floating-back:active {
+  transform: translateY(1px) scale(0.96);
+}
+
 .report {
   display: grid;
   gap: 14px;
@@ -482,7 +510,7 @@ label {
   gap: 8px;
 }
 
-.module-summary div {
+.summary-tile {
   display: grid;
   gap: 4px;
   border: 1px solid var(--line);
@@ -490,6 +518,8 @@ label {
   background: var(--panel);
   padding: 10px;
   box-shadow: var(--shadow-soft);
+  text-align: left;
+  width: 100%;
 }
 
 .module-summary span {
@@ -529,6 +559,16 @@ label {
   color: var(--text);
 }
 
+.breakdown-button {
+  width: 100%;
+  text-align: left;
+}
+
+.breakdown-button:hover {
+  border-color: #bec9b7;
+  background: var(--green-soft);
+}
+
 .crop-title {
   margin: 4px 0 0;
 }
@@ -538,7 +578,7 @@ label {
   gap: 8px;
 }
 
-.report-grid div,
+.report-card,
 .category-row {
   display: flex;
   align-items: center;
@@ -549,6 +589,8 @@ label {
   border-radius: 6px;
   padding: 12px;
   box-shadow: var(--shadow);
+  text-align: left;
+  width: 100%;
 }
 
 .report-grid span,
@@ -562,12 +604,18 @@ label {
   gap: 8px;
 }
 
+.report-card:hover,
+.category-row:hover {
+  border-color: #bec9b7;
+  background: var(--green-soft);
+}
+
 .operations-summary {
   display: grid;
   gap: 8px;
 }
 
-.operations-summary article {
+.operations-card {
   display: grid;
   gap: 8px;
   border: 1px solid var(--line);
@@ -575,6 +623,8 @@ label {
   background: var(--panel);
   padding: 12px;
   box-shadow: var(--shadow-soft);
+  text-align: left;
+  width: 100%;
 }
 
 .operations-summary span,
@@ -585,6 +635,11 @@ label {
 .operations-summary strong {
   color: var(--green);
   font-size: 1.35rem;
+}
+
+.operations-card:hover {
+  border-color: #bec9b7;
+  background: var(--green-soft);
 }
 
 .mini-breakdown {
@@ -735,6 +790,103 @@ textarea {
   border-left: 5px solid var(--green);
   border-radius: 6px;
   padding: 10px;
+}
+
+.movement-button {
+  width: 100%;
+  text-align: left;
+}
+
+.movement-button:hover {
+  border-color: #bec9b7;
+  background: var(--green-soft);
+}
+
+.movement-button:active {
+  transform: scale(0.99);
+}
+
+.form-section-title {
+  margin-bottom: 2px;
+}
+
+.detail {
+  display: grid;
+  gap: 14px;
+}
+
+.detail-screen-header {
+  align-items: flex-start;
+}
+
+.detail-heading {
+  display: grid;
+  gap: 4px;
+}
+
+.detail-eyebrow {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.detail-summary,
+.detail-content {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.detail-metric,
+.detail-grid-item {
+  display: grid;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+}
+
+.detail-metric span,
+.detail-grid-item span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.detail-metric strong,
+.detail-grid-item strong {
+  color: var(--green);
+  font-size: 1.02rem;
+}
+
+.detail-section {
+  display: grid;
+  gap: 10px;
+}
+
+.detail-section h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.detail-grid,
+.detail-stack {
+  display: grid;
+  gap: 8px;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .movement.Gasto {
@@ -926,5 +1078,9 @@ dialog::backdrop {
 
   .home-action.crops-link {
     grid-column: auto;
+  }
+
+  .detail-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

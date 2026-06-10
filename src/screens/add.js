@@ -12,7 +12,7 @@ export function renderAddScreen() {
   return `
     <section class="add-screen screen hidden" data-panel="Anadir">
       <div class="screen-header">
-        <button class="back-button" id="backHomeFromAdd" type="button" aria-label="Volver al inicio">
+        <button class="back-button" id="backHomeFromAdd" type="button" aria-label="Volver a la pantalla anterior">
           <svg><use href="#icon-arrow-left"></use></svg>
         </button>
         <h2>Añadir</h2>

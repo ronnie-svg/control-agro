@@ -2,30 +2,34 @@ export function renderLivestockScreen() {
   return `
     <section class="livestock screen hidden" data-panel="Ganado">
       <div class="screen-header">
-        <button class="back-button" id="backHomeFromLivestock" type="button" aria-label="Volver al inicio">
+        <button class="back-button" id="backHomeFromLivestock" type="button" aria-label="Volver a la pantalla anterior">
           <svg><use href="#icon-arrow-left"></use></svg>
         </button>
         <h2>Ganado</h2>
       </div>
 
       <section class="module-summary" aria-label="Resumen de ganado">
-        <div>
+        <button class="summary-tile" id="livestockSummaryTotalButton" type="button">
           <span>Activos</span>
           <strong id="livestockTotal">0</strong>
-        </div>
-        <div>
+        </button>
+        <button class="summary-tile" id="livestockSummaryCowsButton" type="button">
           <span>Vacas</span>
           <strong id="cowTotal">0</strong>
-        </div>
-        <div>
+        </button>
+        <button class="summary-tile" id="livestockSummaryCalvesButton" type="button">
           <span>Terneros</span>
           <strong id="calfTotal">0</strong>
-        </div>
+        </button>
       </section>
       <div id="livestockTypeSummary" class="breakdown-list"></div>
 
       <form id="livestockForm" class="form">
-        <h2>Registrar animal</h2>
+        <div class="section-title form-section-title">
+          <h2 id="livestockFormTitle">Registrar animal</h2>
+          <button class="secondary small hidden" id="livestockCancelEditButton" type="button">Cancelar edicion</button>
+        </div>
+
         <label>
           Identificador / crotal
           <input id="animalRef" placeholder="Ej. ES0123456789" required>
@@ -73,15 +77,15 @@ export function renderLivestockScreen() {
 
         <label>
           Notas
-          <textarea id="animalNotes" rows="3" placeholder="Sanidad, cubrición, parto, observaciones"></textarea>
+          <textarea id="animalNotes" rows="3" placeholder="Sanidad, cubricion, parto, observaciones"></textarea>
         </label>
 
-        <button class="submit" type="submit">Guardar animal</button>
+        <button class="submit" id="livestockSubmitButton" type="submit">Guardar animal</button>
         <p class="status" id="livestockStatus" role="status"></p>
       </form>
 
       <div class="section-title crop-title">
-        <h2>Últimos animales</h2>
+        <h2>Ultimos animales</h2>
       </div>
       <div id="livestockList" class="recent-list"></div>
     </section>

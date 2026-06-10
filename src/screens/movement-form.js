@@ -2,7 +2,7 @@ export function renderMovementFormScreen() {
   return `
     <form id="movementForm" class="form screen hidden" data-panel="Movimiento">
       <div class="screen-header form-header">
-        <button class="back-button" id="backHome" type="button" aria-label="Volver al inicio">
+        <button class="back-button" id="backHome" type="button" aria-label="Volver a la pantalla anterior">
           <svg><use href="#icon-arrow-left"></use></svg>
         </button>
         <h2 id="formTitle">Nuevo ingreso</h2>
