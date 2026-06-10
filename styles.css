@@ -432,6 +432,13 @@ label {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  margin: -4px -4px 2px;
+  padding: 10px 4px 10px;
+  background: linear-gradient(180deg, rgb(242 240 234 / 96%) 0%, rgb(242 240 234 / 88%) 72%, rgb(242 240 234 / 0%) 100%);
+  backdrop-filter: blur(10px);
 }
 
 .form-header {
@@ -441,56 +448,29 @@ label {
 .back-button {
   display: grid;
   place-items: center;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   flex: 0 0 auto;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--panel);
-  color: var(--green);
-  box-shadow: var(--shadow-soft);
+  border: 1px solid rgb(49 75 51 / 18%);
+  border-radius: 14px;
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 12px 26px rgb(20 31 21 / 16%);
 }
 
 .back-button svg {
-  width: 21px;
-  height: 21px;
+  width: 22px;
+  height: 22px;
 }
 
 .back-button:hover {
-  background: var(--green);
-  border-color: var(--green);
-  color: #fff;
+  background: #243b27;
+  border-color: #243b27;
   transform: translateX(-2px);
 }
 
 .back-button:active {
   transform: translateX(-4px) scale(0.96);
-}
-
-.floating-back {
-  position: fixed;
-  top: 18px;
-  left: max(18px, calc(50% - 318px));
-  z-index: 30;
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border: 1px solid rgb(36 37 31 / 10%);
-  border-radius: 999px;
-  background: rgb(49 75 51 / 94%);
-  color: #fff;
-  box-shadow: 0 16px 32px rgb(20 31 21 / 24%);
-  backdrop-filter: blur(12px);
-}
-
-.floating-back:hover {
-  background: #243b27;
-  transform: translateY(-1px);
-}
-
-.floating-back:active {
-  transform: translateY(1px) scale(0.96);
 }
 
 .report {

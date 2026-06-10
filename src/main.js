@@ -36,9 +36,6 @@ function renderAppShell() {
   document.querySelector("#app").innerHTML = `
     ${renderIconSprite()}
     ${renderHeader()}
-    <button class="floating-back hidden" id="floatingBackButton" type="button" aria-label="Volver a la pantalla anterior">
-      <svg><use href="#icon-arrow-left"></use></svg>
-    </button>
     ${renderReportScreen()}
     ${renderHomeScreen()}
     ${renderAddScreen()}
@@ -1016,12 +1013,6 @@ function renderDetailView() {
   bindDetailContentInteractions();
 }
 
-function updateFloatingBackButton() {
-  const button = document.querySelector("#floatingBackButton");
-  const shouldShow = viewSignature(currentView) !== viewSignature(ROOT_VIEW);
-  button.classList.toggle("hidden", !shouldShow);
-}
-
 function renderView() {
   document.querySelector(".app").scrollTo({ top: 0, behavior: "auto" });
 
@@ -1035,8 +1026,6 @@ function renderView() {
   document.querySelectorAll(".screen").forEach((panel) => {
     panel.classList.toggle("hidden", panel.dataset.panel !== activePanel);
   });
-
-  updateFloatingBackButton();
 
   if (activePanel === "Resumen") {
     updateSummary();
@@ -1104,8 +1093,6 @@ function bindNavigationButtons() {
   document.querySelectorAll(".back-button").forEach((button) => {
     button.addEventListener("click", goBackInApp);
   });
-
-  document.querySelector("#floatingBackButton").addEventListener("click", goBackInApp);
 
   document.querySelector("#monthResultCard").addEventListener("click", () => {
     navigateTo({ screen: "Detalle", detailType: "finance-metric", metric: "monthResult" });
